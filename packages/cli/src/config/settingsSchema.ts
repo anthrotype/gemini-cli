@@ -343,6 +343,15 @@ const SETTINGS_SCHEMA = {
         description: 'Display memory usage information in the UI',
         showInDialog: true,
       },
+      showThinkingTraces: {
+        type: 'boolean',
+        label: 'Show Thinking Traces',
+        category: 'UI',
+        requiresRestart: false,
+        default: false,
+        description: 'Show thinking traces from the model.',
+        showInDialog: true,
+      },
       showLineNumbers: {
         type: 'boolean',
         label: 'Show Line Numbers',

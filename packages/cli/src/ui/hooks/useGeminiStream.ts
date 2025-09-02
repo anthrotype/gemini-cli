@@ -665,14 +665,16 @@ export const useGeminiStream = (
           case ServerGeminiEventType.Thought:
             setThought(event.value);
             // Add thinking trace to history for display
-            addItem(
-              {
-                type: 'thinking',
-                subject: event.value.subject,
-                description: event.value.description,
-              } as HistoryItemWithoutId,
-              userMessageTimestamp,
-            );
+            if (config.getShowThinkingTraces()) {
+              addItem(
+                {
+                  type: 'thinking',
+                  subject: event.value.subject,
+                  description: event.value.description,
+                } as HistoryItemWithoutId,
+                userMessageTimestamp,
+              );
+            }
             break;
           case ServerGeminiEventType.Content:
             geminiMessageBuffer = handleContentEvent(

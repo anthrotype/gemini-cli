@@ -628,6 +628,7 @@ export async function loadCliConfig(
     approvalMode,
     showMemoryUsage:
       argv.showMemoryUsage || settings.ui?.showMemoryUsage || false,
+    showThinkingTraces: settings.ui?.showThinkingTraces ?? false,
     accessibility: {
       ...settings.ui?.accessibility,
       screenReader,
