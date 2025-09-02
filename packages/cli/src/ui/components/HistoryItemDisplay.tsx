@@ -17,6 +17,7 @@ import { ToolGroupMessage } from './messages/ToolGroupMessage.js';
 import { GeminiMessageContent } from './messages/GeminiMessageContent.js';
 import { CompressionMessage } from './messages/CompressionMessage.js';
 import { WarningMessage } from './messages/WarningMessage.js';
+import { ThinkingMessage } from './messages/ThinkingMessage.js';
 import { Box } from 'ink';
 import { AboutBox } from './AboutBox.js';
 import { StatsDisplay } from './StatsDisplay.js';
@@ -128,6 +129,9 @@ export const HistoryItemDisplay: React.FC<HistoryItemDisplayProps> = ({
       )}
       {itemForDisplay.type === 'compression' && (
         <CompressionMessage compression={itemForDisplay.compression} />
+      )}
+      {item.type === 'thinking' && (
+        <ThinkingMessage subject={item.subject} description={item.description} />
       )}
       {itemForDisplay.type === 'extensions_list' && <ExtensionsList />}
       {itemForDisplay.type === 'tools_list' && (

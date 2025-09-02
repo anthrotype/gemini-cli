@@ -163,6 +163,12 @@ export type HistoryItemCompression = HistoryItemBase & {
 
 export type HistoryItemExtensionsList = HistoryItemBase & {
   type: 'extensions_list';
+}
+
+export type HistoryItemThinking = HistoryItemBase & {
+  type: 'thinking';
+  subject: string;
+  description: string;
 };
 
 export interface ToolDefinition {
@@ -234,7 +240,8 @@ export type HistoryItemWithoutId =
   | HistoryItemCompression
   | HistoryItemExtensionsList
   | HistoryItemToolsList
-  | HistoryItemMcpStatus;
+  | HistoryItemMcpStatus
+  | HistoryItemThinking;
 
 export type HistoryItem = HistoryItemWithoutId & { id: number };
 
