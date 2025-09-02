@@ -181,6 +181,12 @@ export type HistoryItemExtensionsList = HistoryItemBase & {
   extensions: GeminiCLIExtension[];
 };
 
+export type HistoryItemThinking = HistoryItemBase & {
+  type: 'thinking';
+  subject: string;
+  description: string;
+};
+
 export interface ChatDetail {
   name: string;
   mtime: string;
@@ -242,6 +248,7 @@ export type HistoryItemMcpStatus = HistoryItemBase & {
 // 'tools' in historyItem.
 // Individually exported types extending HistoryItemBase
 export type HistoryItemWithoutId =
+  | HistoryItemThinking
   | HistoryItemUser
   | HistoryItemUserShell
   | HistoryItemGemini
