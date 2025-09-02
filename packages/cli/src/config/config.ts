@@ -600,6 +600,7 @@ export async function loadCliConfig(
     approvalMode,
     disableYoloMode: settings.security?.disableYoloMode,
     showMemoryUsage: settings.ui?.showMemoryUsage || false,
+    showThinkingTraces: settings.ui?.showThinkingTraces ?? false,
     accessibility: {
       ...settings.ui?.accessibility,
       screenReader,
