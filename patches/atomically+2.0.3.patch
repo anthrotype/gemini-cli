@@ -1,0 +1,15 @@
+diff --git a/node_modules/atomically/dist/constants.js b/node_modules/atomically/dist/constants.js
+index 2d5275a..9cd9957 100644
+--- a/node_modules/atomically/dist/constants.js
++++ b/node_modules/atomically/dist/constants.js
+@@ -7,8 +7,8 @@ const DEFAULT_FILE_MODE = 0o666;
+ const DEFAULT_FOLDER_MODE = 0o777;
+ const DEFAULT_READ_OPTIONS = {};
+ const DEFAULT_WRITE_OPTIONS = {};
+-const DEFAULT_USER_UID = os.userInfo().uid;
+-const DEFAULT_USER_GID = os.userInfo().gid;
++const DEFAULT_USER_UID = process.geteuid ? process.geteuid() : -1;
++const DEFAULT_USER_GID = process.getegid ? process.getegid() : -1;
+ const DEFAULT_TIMEOUT_ASYNC = 7500;
+ const DEFAULT_TIMEOUT_SYNC = 1000;
+ const IS_POSIX = !!process.getuid;
