@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development node scripts/start.js",
+    "postinstall": "patch-package",
     "start:a2a-server": "CODER_AGENT_PORT=41242 npm run start --workspace @google/gemini-cli-a2a-server",
     "debug": "cross-env DEBUG=1 node --inspect-brk scripts/start.js",
     "deflake": "node scripts/deflake.js",
@@ -109,6 +110,7 @@
     "mock-fs": "^5.5.0",
     "msw": "^2.10.4",
     "npm-run-all": "^4.1.5",
+    "patch-package": "^8.0.0",
     "prettier": "^3.5.3",
     "react-devtools-core": "^6.1.2",
     "semver": "^7.7.2",
