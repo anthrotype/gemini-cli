@@ -113,7 +113,6 @@ async function initOauthClient(
         console.warn('Failed to fetch user info:', getErrorMessage(error));
       }
     }
-    console.log('Loaded cached credentials.');
     return client;
   }
 
