@@ -314,32 +314,6 @@ export class CoderAgentExecutor implements AgentExecutor {
     const abortController = new AbortController();
     const abortSignal = abortController.signal;
 
-    if (store) {
-      // Grab the raw socket from the request object
-      const socket = store.req.socket;
-      const onClientEnd = () => {
-        logger.info(
-          `[CoderAgentExecutor] Client socket closed for task ${taskId}. Cancelling execution.`,
-        );
-        if (!abortController.signal.aborted) {
-          abortController.abort();
-        }
-        // Clean up the listener to prevent memory leaks
-        socket.removeListener('close', onClientEnd);
-      };
-
-      // Listen on the socket's 'end' event (remote closed the connection)
-      socket.on('end', onClientEnd);
-
-      // It's also good practice to remove the listener if the task completes successfully
-      abortSignal.addEventListener('abort', () => {
-        socket.removeListener('end', onClientEnd);
-      });
-      logger.info(
-        `[CoderAgentExecutor] Socket close handler set up for task ${taskId}.`,
-      );
-    }
-
     let wrapper: TaskWrapper | undefined = this.tasks.get(taskId);
 
     if (wrapper) {
@@ -459,6 +433,38 @@ export class CoderAgentExecutor implements AgentExecutor {
       `[CoderAgentExecutor] Starting main execution for message ${userMessage.messageId} for task ${taskId}.`,
     );
     this.executingTasks.add(taskId);
+
+    // Set up socket close handler only for main executions, not continuations
+    if (store) {
+      const socket = store.req.socket;
+      const onClientEnd = () => {
+        // Don't cancel if task is waiting for input - socket close is expected for SSE
+        if (currentTask?.taskState === 'input-required') {
+          logger.info(
+            `[CoderAgentExecutor] Client socket closed for task ${taskId}, but task is waiting for input. Not cancelling.`,
+          );
+          socket.removeListener('end', onClientEnd);
+          return;
+        }
+
+        logger.info(
+          `[CoderAgentExecutor] Client socket closed for task ${taskId}. Cancelling execution.`,
+        );
+        if (!abortController.signal.aborted) {
+          abortController.abort();
+        }
+        socket.removeListener('end', onClientEnd);
+      };
+
+      socket.on('end', onClientEnd);
+
+      abortSignal.addEventListener('abort', () => {
+        socket.removeListener('end', onClientEnd);
+      });
+      logger.info(
+        `[CoderAgentExecutor] Socket close handler set up for task ${taskId}.`,
+      );
+    }
 
     try {
       let agentTurnActive = true;
